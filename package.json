@@ -4,7 +4,8 @@
   "description": "Generates Maker Party event host certificates automagically when their event is completed and feedback is provided",
   "main": "server.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
