@@ -6,6 +6,7 @@
         <th>Date</th>
         <th>Organizer</th>
         <th>Event</th>
+        <th>Organizer has Cert?</th>
         <th>Generate Cert</th>
       </thead>
       <tbody class="table-striped">
@@ -14,7 +15,8 @@
             <td><%= event.humanDate %></td>
             <td><%= event.organizerId %></td>
             <td><a href="https://events.webmaker.org/#!/events/<%= event.id %>"><%= event.title %></a></td>
-            <td><a href="/generate?recipient=<%= event.organizerId %>&recipientUsername=<%= event.organizerId %>" class="btn btn-secondary"><i class="fa fa-gears"></i> generate cert</a></td>
+            <td><%= event.organiserHasCert %></td>
+            <td><a href="/generate?recipient=<%= event.organizerId %>&recipientUsername=<%= event.organizerId %>" class="btn <%= (event.organiserHasCert) ? 'btn-danger' : 'btn-secondary' %>"><i class="fa fa-gears"></i> generate cert</a></td>
           </tr>
         <% } %>
       </tbody>

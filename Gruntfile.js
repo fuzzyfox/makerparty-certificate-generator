@@ -40,7 +40,7 @@ module.exports = function( grunt ) {
         options: {
           script: './server.js',
           args: [ '--debug' ],
-          port: 3000
+          port: 4224
         }
       }
     },
