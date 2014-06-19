@@ -1,0 +1,43 @@
+{
+  "name": "makerparty-certificate-generator",
+  "version": "0.0.1",
+  "description": "Generates Maker Party event host certificates automagically when their event is completed and feedback is provided",
+  "main": "server.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fuzzyfox/makerparty-certificate-generator.git"
+  },
+  "keywords": [
+    "mozilla",
+    "makerparty",
+    "event",
+    "certificate",
+    "generator"
+  ],
+  "author": "William Duyck <wduyck@mozillafoundation.org>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/fuzzyfox/makerparty-certificate-generator/issues"
+  },
+  "homepage": "https://github.com/fuzzyfox/makerparty-certificate-generator",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.17"
+  },
+  "dependencies": {
+    "body-parser": "^1.3.1",
+    "ejs": "^1.0.0",
+    "express": "^4.4.3",
+    "habitat": "^1.1.0",
+    "moment": "^2.7.0",
+    "open": "0.0.5",
+    "redis": "^0.10.3",
+    "request": "^2.36.0",
+    "tmp": "0.0.23"
+  }
+}

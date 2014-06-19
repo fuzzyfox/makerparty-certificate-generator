@@ -1,0 +1,24 @@
+<% include header %>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <table class="table">
+      <thead>
+        <th>Date</th>
+        <th>Organizer</th>
+        <th>Event</th>
+        <th>Generate Cert</th>
+      </thead>
+      <tbody class="table-striped">
+        <% for(var idx = 0; idx < events.length; idx++ ) { event = events[ idx ]; %>
+          <tr>
+            <td><%= event.humanDate %></td>
+            <td><%= event.organizerId %></td>
+            <td><a href="https://events.webmaker.org/#!/events/<%= event.id %>"><%= event.title %></a></td>
+            <td><a href="/generate?recipient=<%= event.organizerId %>&recipientUsername=<%= event.organizerId %>" class="btn btn-secondary"><i class="fa fa-gears"></i> generate cert</a></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% include footer %>
