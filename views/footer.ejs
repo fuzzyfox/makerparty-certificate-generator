@@ -44,6 +44,10 @@
             if( window.query.redirect ) {
               location.href = window.query.redirect;
             }
+
+            if( location.pathname === '/login') {
+              location.href = '/';
+            }
           }
         }, false);
 
@@ -62,7 +66,7 @@
           });
 
           if( location.pathname !== '/login') {
-            location.href = '/login'
+            location.href = '/login';
           }
         });
         xhr.send();

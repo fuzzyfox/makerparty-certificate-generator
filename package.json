@@ -39,7 +39,6 @@
     "express-session": "^1.4.0",
     "habitat": "^1.1.0",
     "moment": "^2.7.0",
-    "open": "0.0.5",
     "redis": "^0.10.3",
     "request": "^2.36.0",
     "tmp": "0.0.23"
