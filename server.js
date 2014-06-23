@@ -16,6 +16,7 @@ var env = shared.env;
 var app = express();
 app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
+app.use( express.static( __dirname + '/public' ) );
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded() );
 app.use( cookieParser() );
@@ -77,6 +78,7 @@ app.get( '/', function( req, res) {
           event.humanDate = moment( event.beginDate ).format( 'YYYY-MM-DD' );
           // also store flag if a cert has been generated for this user before
           event.organiserHasCert = hosts.isStored( event.organizerId );
+          event.link = env.get( 'events_app' ) + '/#!/events/' + event.id;
           events.push( event );
         }
       });
