@@ -39,8 +39,10 @@
     "express-session": "^1.4.0",
     "habitat": "^1.1.0",
     "moment": "^2.7.0",
+    "node-mp-cert-generator": "git://github.com/fuzzyfox/node-mp-cert-generator",
     "redis": "^0.10.3",
     "request": "^2.36.0",
-    "tmp": "0.0.23"
+    "tmp": "0.0.23",
+    "webmaker-user-client": "^0.1.1"
   }
 }

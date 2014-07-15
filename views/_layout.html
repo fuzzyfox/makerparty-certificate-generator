@@ -1,3 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//stuff.webmaker.org/makerstrap/v0.1.7/makerstrap.complete.min.css">
+  <title>{{ title }}</title>
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="/" class="navbar-brand">Maker Party Certificate Generator</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#login" class="persona-logout"><i class="fa fa-lock"></i> logout</a></li>
+        <li><a href="https://github.com/fuzzyfox/makerparty-certificate-generator"><span class="fa fa-github"></span> fuzzyfox/makerparty-certificate-generator</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    {% block main %}
+    {% endblock %}
   </div>
 
   <script src="https://login.persona.org/include.js"></script>

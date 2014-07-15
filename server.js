@@ -7,8 +7,11 @@ var session = require( 'express-session' );
 var request = require( 'request' );
 var moment = require( 'moment' );
 // we'll ignore the next line in hinting as there is no redefinition
-var certUtils = require('./lib/certificate');
+var certUtils = require('node-mp-cert-generator');
+var nunjucks = require( 'nunjucks' );
+var fs = require( 'fs' );
 var hosts = require( './lib/hosts' );
+var candidates = require( './lib/candidates' );
 var shared = require( './shared' );
 var env = shared.env;
 
@@ -27,6 +30,14 @@ require( 'express-persona' )( app, {
   audience: env.get( 'persona_audience' )
 });
 
+// setup nunjucks
+var nunjucksEnv = nunjucks.configure( 'views', {
+  autoescape: true
+});
+
+// add nunjucks to res.render
+nunjucksEnv.express( app );
+
 // quick healtcheck
 app.get( '/healthcheck', function( req, res ) {
   res.json({
@@ -37,7 +48,7 @@ app.get( '/healthcheck', function( req, res ) {
 
 // login route
 app.get( '/login', function( req, res ) {
-  res.render( 'login', { title: 'Login pl0x' } );
+  res.render( 'login.html', { title: 'Login pl0x' } );
 });
 
 // enforce persona login for all protected routes
@@ -72,7 +83,12 @@ app.get( '/', function( req, res) {
       var events = [];
 
       // go through and check if event would have started yet (only show those that have)
+      // also check that the event organizer is in the list of candidates
       data.forEach( function( event, idx ) {
+        if( candidates.get().indexOf( event.organizerId ) === -1 ) {
+          return;
+        }
+
         if( moment( event.beginDate ) <=  moment() ) {
           // easier to add human date here for user display
           event.humanDate = moment( event.beginDate ).format( 'YYYY-MM-DD' );
@@ -83,16 +99,19 @@ app.get( '/', function( req, res) {
         }
       });
 
-      res.render( 'list', {
+      res.render( 'list.html', {
         title: 'Candidates',
         events: events
       });
+    }
+    else {
+      res.status( 500 ).send( 'Error: could not get events' );
     }
   });
 });
 
 app.get( '/generate', function( req, res ) {
-  res.render( 'form', {
+  res.render( 'form.html', {
     title: 'Generate Certificate',
     query: req.query
   });
@@ -106,12 +125,14 @@ app.post( '/generate', function( req, res ) {
     'Expires': '0'
   });
 
+  // set issuer
+  var issuer = __dirname + '/assets/issuers/amira.svg'; // default issuer
+  if( fs.existsSync( __dirname + '/assets/issuers/' + req.body.issuer + '.svg' ) ) {
+    issuer = __dirname + '/assets/issuers/' + req.body.issuer + '.svg';
+  }
+
   // generate svg certificate
-  var svgCert = certUtils.generate({
-    recipient: req.body.recipient,
-    issuer: req.body.issuerName,
-    issuerRole: req.body.issuerRole
-  });
+  var svgCert = certUtils.render( req.body.recipient, issuer );
 
   // we've now generated a cert for the user, lets remember this
   hosts.add( req.body.recipientUsername );
@@ -123,7 +144,7 @@ app.post( '/generate', function( req, res ) {
   }
 
   // pdf/png requested so lets convert and send back
-  certUtils.remoteConvert( svgCert, req.body.outputFormat, env.get( 'svable_key' ), function( err, convertedCert ) {
+  certUtils.convert( svgCert, req.body.outputFormat, env.get( 'svable_key' ), function( convertedCert ) {
     if( req.body.outputFormat === 'png' ) {
       res.set( 'Content-Type', 'image/png' );
     }

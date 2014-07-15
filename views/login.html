@@ -1,0 +1,14 @@
+{% extends '_layout.html' %}
+
+{% block main %}
+  <a href="#login" class="btn btn-primary persona-login">login</a>
+
+  <script>
+    document.addEventListener( 'DOMContentLoaded', function() {
+      if( window.query.mofo === 'false' ) {
+        alert( 'mofos only. sorry :(' );
+        navigator.id.logout();
+      }
+    });
+  </script>
+{% endblock %}
