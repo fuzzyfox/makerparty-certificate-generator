@@ -6,6 +6,7 @@ var cookieParser = require( 'cookie-parser' );
 var session = require( 'express-session' );
 var request = require( 'request' );
 var moment = require( 'moment' );
+var helmet = require( 'helmet' );
 // we'll ignore the next line in hinting as there is no redefinition
 var certUtils = require('node-mp-cert-generator');
 var nunjucks = require( 'nunjucks' );
@@ -17,6 +18,7 @@ var env = shared.env;
 
 // setup app
 var app = express();
+app.disable( 'x-powered-by' );
 app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
 app.use( express.static( __dirname + '/public' ) );
@@ -24,6 +26,16 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded() );
 app.use( cookieParser() );
 app.use( session( { secret: env.get( 'session_secret' ) } ) );
+app.use( helmet.xssFilter() );
+app.use( helmet.nosniff() );
+app.use( helmet.xframe() );
+
+if( env.get( 'force_ssl' ) ) {
+  app.enable( 'trust proxy' );
+  // force https
+  app.use( require('express-enforces-ssl')() );
+  app.use( helmet.hsts() );
+}
 
 // persona setup
 require( 'express-persona' )( app, {
