@@ -3,6 +3,8 @@ module.exports = function( grunt ) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON( 'package.json' ),
+
+    // hint the JS
     jshint: {
       options: {
         'globals': {
@@ -36,6 +38,7 @@ module.exports = function( grunt ) {
       ]
     },
 
+    // run local dev server
     express: {
       dev: {
         options: {
@@ -43,6 +46,32 @@ module.exports = function( grunt ) {
           args: [ '--debug' ],
           port: 4224
         }
+      }
+    },
+
+    // bump version numbers
+    bump: {
+      options: {
+        files: [ 'package.json', 'bower.json' ],
+        commitMessage: 'version bump to v%VERSION%',
+        push: false
+      }
+    },
+
+    // validate svg files
+    validation: {
+      options: {
+        // always run all svg file tests
+        reset: true,
+        // we don't 100% need the xml content type for our SVGs
+        relaxerror: [ 'Non-XML Content-Type: .' ],
+        // fail the task if other errors found
+        failhard: true,
+        // prevent report file generation
+        reportpath: false
+      },
+      files: {
+        src: [ 'assets/issuers/*.svg' ]
       }
     },
 
@@ -60,10 +89,14 @@ module.exports = function( grunt ) {
     }
   });
 
+  // load tasks
   grunt.loadNpmTasks( 'grunt-contrib-jshint' );
   grunt.loadNpmTasks( 'grunt-express-server' );
   grunt.loadNpmTasks( 'grunt-contrib-watch' );
+  grunt.loadNpmTasks( 'grunt-html-validation' );
+  grunt.loadNpmTasks( 'grunt-bump' );
 
+  // register tasks
   grunt.registerTask( 'default', [ 'jshint', 'express:dev', 'watch' ] );
-  grunt.registerTask( 'test', [ 'jshint' ] );
+  grunt.registerTask( 'test', [ 'jshint', 'validation' ] );
 };
