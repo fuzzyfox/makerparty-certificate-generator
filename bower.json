@@ -1,0 +1,28 @@
+{
+  "name": "ivory-wildcat",
+  "version": "0.0.3",
+  "homepage": "https://github.com/fuzzyfox/makerparty-certificate-generator",
+  "authors": [
+    "William Duyck <wduyck@mozillafoundation.org>"
+  ],
+  "description": "Generates Maker Party event host certificates automagically when their event is completed and feedback is provided",
+  "keywords": [
+    "mozilla",
+    "webmaker",
+    "makerparty",
+    "generator"
+  ],
+  "license": "MPL-2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "makerstrap": "~0.2.2"
+  }
+}

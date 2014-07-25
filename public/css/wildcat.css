@@ -1,0 +1,25 @@
+#cert-result {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  border: 4px solid #fff;
+}
+
+  #cert-result.loaded {
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+
+.iframe-responsive {
+  position: relative;
+  padding-bottom: 70%;
+  padding-top: 25px;
+  height: 0;
+}
+
+  .iframe-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
