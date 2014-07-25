@@ -1,68 +1,78 @@
 {% extends '_layout.html' %}
 
 {% block main %}
-  <form action="/generate" method="POST" class="form-horizontal">
-    <fieldset>
+  <div class="row">
+    <div class="col-md-4">
+      <form action="/generate" method="POST" target="cert-result" class="form-horizontal">
+        <fieldset>
 
-    <!-- Form Name -->
-    <legend>Generate Certificate</legend>
+          <!-- Form Name -->
+          <legend>Generate Certificate</legend>
 
-    <!-- Text input-->
-    <div class="control-group">
-      <label class="control-label" for="recipient">Recipient Name</label>
-      <div class="controls">
-        <input id="recipient" name="recipient" placeholder="William Duyck" class="input-xlarge" required="" type="text" value="{{ query.recipient }}">
-        <p class="help-block">their real name if we know it</p>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="recipient">Recipient Name</label>
+            <div class="controls">
+              <input id="recipient" name="recipient" placeholder="William Duyck" class="input-xlarge" required="" type="text" value="{{ query.recipient }}">
+              <p class="help-block">their real name if we know it</p>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="recipientUsername">Recipient Username</label>
+            <div class="controls">
+              <input id="recipientUsername" name="recipientUsername" placeholder="fuzzyfox" class="input-xlarge" required="" type="text" value="{{ query.recipientUsername }}">
+              <p class="help-block">i.e. their webmaker username</p>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="control-group">
+            <label class="control-label" for="issuer">File Format</label>
+            <div class="controls">
+              <select id="issuer" name="issuer" class="input-xlarge">
+                <option value="amira">A Dhalla</option>
+                <option value="lucy">L Harris</option>
+                <option value="william">W Duyck</option>
+                <option value="mark">M Surman</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="control-group">
+            <label class="control-label" for="outputFormat">File Format</label>
+            <div class="controls">
+              <select id="outputFormat" name="outputFormat" class="input-xlarge">
+                <option value="svg">SVG</option>
+                <option value="pdf" selected>PDF</option>
+                <option value="png">PNG</option>
+              </select>
+            </div>
+          </div>
+
+
+          <!-- Button -->
+          <div class="control-group">
+            <label class="control-label" for="submit"></label>
+            <div class="controls">
+              <button id="submit" name="submit" class="btn btn-success">Generate</button>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <div class="iframe-responsive">
+        <iframe frameborder="0" id="cert-result" name="cert-result"></iframe>
       </div>
     </div>
-
-    <!-- Text input-->
-    <div class="control-group">
-      <label class="control-label" for="recipientUsername">Recipient Username</label>
-      <div class="controls">
-        <input id="recipientUsername" name="recipientUsername" placeholder="fuzzyfox" class="input-xlarge" required="" type="text" value="{{ query.recipientUsername }}">
-        <p class="help-block">i.e. their webmaker username</p>
-      </div>
-    </div>
-
-    <!-- Select Basic -->
-    <div class="control-group">
-      <label class="control-label" for="issuer">File Format</label>
-      <div class="controls">
-        <select id="issuer" name="issuer" class="input-xlarge">
-          <option value="amira">A Dhalla</option>
-          <option value="lucy">L Harris</option>
-          <option value="william">W Duyck</option>
-          <option value="mark">M Surman</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Select Basic -->
-    <div class="control-group">
-      <label class="control-label" for="outputFormat">File Format</label>
-      <div class="controls">
-        <select id="outputFormat" name="outputFormat" class="input-xlarge">
-          <option value="svg">SVG</option>
-          <option value="pdf" selected>PDF</option>
-          <option value="png">PNG</option>
-        </select>
-      </div>
-    </div>
-
-
-    <!-- Button -->
-    <div class="control-group">
-      <label class="control-label" for="submit"></label>
-      <div class="controls">
-        <button id="submit" name="submit" class="btn btn-success">Generate</button>
-      </div>
-    </div>
-
-    </fieldset>
-  </form>
+  </div>
 {% endblock %}
 
 
 {% block custom_scripts %}
+  <script src="/js/generate.js"></script>
 {% endblock %}

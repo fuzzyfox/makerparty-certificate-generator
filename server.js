@@ -19,6 +19,7 @@ var env = shared.env;
 // setup app
 var app = express();
 app.disable( 'x-powered-by' );
+app.use( express.static( __dirname + '/public' ) );
 app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
 app.use( express.static( __dirname + '/public' ) );
@@ -28,7 +29,7 @@ app.use( cookieParser() );
 app.use( session( { secret: env.get( 'session_secret' ) } ) );
 app.use( helmet.xssFilter() );
 app.use( helmet.nosniff() );
-app.use( helmet.xframe() );
+app.use( helmet.xframe( 'sameorigin' ) );
 
 if( env.get( 'force_ssl' ) ) {
   app.enable( 'trust proxy' );

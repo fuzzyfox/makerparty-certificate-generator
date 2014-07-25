@@ -33,8 +33,9 @@ module.exports = function( grunt ) {
       files: [
         'Gruntfile.js',
         '*.js',
-        'bin/*.js',
-        'lib/*.js'
+        'bin/**/*.js',
+        'lib/**/*.js',
+        'public/js/**/*.js'
       ]
     },
 
@@ -77,10 +78,10 @@ module.exports = function( grunt ) {
 
     // running `grunt watch` will watch for changes
     watch: {
-      files: [ '*.js', '*/**.js' ],
+      files: [ '*.js', 'lib/**/*.js', 'public/js/**/*.js' ],
       tasks: [ 'jshint', 'express:dev' ],
       express: {
-        files: [ '*.js', '*/**.js' ],
+        files: [ '*.js', 'lib/**/*.js' ],
         tasks:  [ 'express:dev' ],
         options: {
           spawn: false
