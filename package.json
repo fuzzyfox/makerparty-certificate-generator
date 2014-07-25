@@ -1,6 +1,6 @@
 {
   "name": "makerparty-certificate-generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Generates Maker Party event host certificates automagically when their event is completed and feedback is provided",
   "main": "server.js",
   "scripts": {
