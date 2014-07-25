@@ -38,3 +38,4 @@ node_modules
 ### Project Specific
 .env
 validation-status.json
+public/vendor
