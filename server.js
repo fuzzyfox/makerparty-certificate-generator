@@ -1,20 +1,19 @@
 'use strict';
 
 var express = require( 'express' );
+var shared = require( './shared' );
+var env = shared.env;
 var bodyParser = require( 'body-parser' );
 var cookieParser = require( 'cookie-parser' );
 var session = require( 'express-session' );
 var request = require( 'request' );
 var moment = require( 'moment' );
 var helmet = require( 'helmet' );
-// we'll ignore the next line in hinting as there is no redefinition
 var certUtils = require('node-mp-cert-generator');
 var nunjucks = require( 'nunjucks' );
 var fs = require( 'fs' );
 var hosts = require( './lib/hosts' );
 var candidates = require( './lib/candidates' );
-var shared = require( './shared' );
-var env = shared.env;
 
 // setup app
 var app = express();
@@ -31,12 +30,18 @@ app.use( helmet.xssFilter() );
 app.use( helmet.nosniff() );
 app.use( helmet.xframe( 'sameorigin' ) );
 
+// force ssl ?
 if( env.get( 'force_ssl' ) ) {
   app.enable( 'trust proxy' );
   // force https
   app.use( require('express-enforces-ssl')() );
   app.use( helmet.hsts() );
 }
+
+// start scheduling auto generation
+require( './lib/autogenerate' )( candidates, hosts );
+// initial fetch of candidates
+candidates.forceUpdate();
 
 // persona setup
 require( 'express-persona' )( app, {
@@ -57,6 +62,38 @@ app.get( '/healthcheck', function( req, res ) {
     version: require( './package' ).version,
     http: 'okay'
   });
+});
+
+app.get( '/:username.:format', function( req, res ) {
+  if( ! hosts.isStored( req.params.username ) || ! /^(png|pdf)$/i.test( req.params.format ) ) {
+    return res.status( 404 ).send( req.url + ' not found' );
+  }
+
+  var host = hosts.getById( req.params.username );
+
+  // set issuer
+  var issuer = __dirname + '/assets/issuers/amira.svg'; // default issuer
+  if( fs.existsSync( __dirname + '/assets/issuers/' + host.issuer + '.svg' ) ) {
+    issuer = __dirname + '/assets/issuers/' + host.issuer + '.svg';
+  }
+
+  var svgCert = certUtils.render( req.params.username, issuer, host.issueDate );
+
+  // pdf/png requested so lets convert and send back
+  certUtils.convert( svgCert, req.params.format, env.get( 'svable_key' ), function( convertedCert ) {
+    if( req.params.format === 'png' ) {
+      res.set( 'Content-Type', 'image/png' );
+    }
+    else {
+      res.set( 'Content-Type', 'application/pdf' );
+    }
+    res.send( convertedCert );
+  });
+});
+
+// landing page route
+app.get( '/', function( req, res ) {
+  res.render( 'landing.html', { title: 'Ooops!'} );
 });
 
 // login route
@@ -81,7 +118,7 @@ app.all( '*', function( req, res, next ) {
 });
 
 // listing of certificate candidates
-app.get( '/', function( req, res) {
+app.get( '/list', function( req, res) {
   // list completed events
   request.get({
     uri: env.get( 'events_platform' ) + '/events',
@@ -124,7 +161,7 @@ app.get( '/', function( req, res) {
 });
 
 app.get( '/generate', function( req, res ) {
-  res.render( 'form.html', {
+  res.render( 'manual-generate.html', {
     title: 'Generate Certificate',
     query: req.query
   });
@@ -147,9 +184,6 @@ app.post( '/generate', function( req, res ) {
   // generate svg certificate
   var svgCert = certUtils.render( req.body.recipient, issuer );
 
-  // we've now generated a cert for the user, lets remember this
-  hosts.add( req.body.recipientUsername );
-
   // check if format requested is svg, if so return it now
   if( req.body.outputFormat === 'svg' ) {
     res.set( 'Content-Type', 'image/svg+xml' );
@@ -168,6 +202,7 @@ app.post( '/generate', function( req, res ) {
   });
 });
 
+// launch server
 var server = app.listen( env.get( 'port' ) || 3000, function() {
   console.log( 'Now listening on %d', server.address().port );
 });

@@ -23,3 +23,13 @@
     width: 100%;
     height: 100%;
   }
+
+#landing {
+  background: #00b0b7 url(//party.webmaker.org/party-resources/MakerPartyPatterns-teal.jpg) center/240px;
+  padding-top: 20%;
+  color: white;
+}
+
+  #landing a {
+    color: #ffe600;
+  }

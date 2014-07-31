@@ -44,7 +44,7 @@ navigator.id.watch({
         }
 
         if( location.pathname === '/login') {
-          location.href = '/';
+          location.href = '/list';
         }
       }
     }, false);

@@ -18,7 +18,7 @@
               <td>{{ event.organizerId }}</td>
               <td><a href="{{ event.link }}">{{ event.title }}</a></td>
               <td>{{ event.organiserHasCert }}</td>
-              <td><a href="/generate?recipient={{ event.organizerId }}&recipientUsername={{ event.organizerId }}" class="btn {{ 'btn-danger' if event.organiserHasCert else 'btn-secondary' }}"><i class="fa fa-gears"></i> generate cert</a></td>
+              <td><a href="/generate?recipient={{ event.organizerId }}" class="btn {{ 'btn-danger' if event.organiserHasCert else 'btn-secondary' }}"><i class="fa fa-gears"></i> generate cert</a></td>
             </tr>
           {% endfor %}
         </tbody>

@@ -2,6 +2,12 @@
 
 {% block main %}
   <div class="row">
+    <div class="col-sm-12">
+      <p>You can use this page to manually generate a certificate for someone.</p>
+      <p class="text-warning"><strong>Caution:</strong> manual certificate generation does not prevent automated generation + email.</p>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-4">
       <form action="/generate" method="POST" target="cert-result" class="form-horizontal">
         <fieldset>
@@ -18,18 +24,9 @@
             </div>
           </div>
 
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="recipientUsername">Recipient Username</label>
-            <div class="controls">
-              <input id="recipientUsername" name="recipientUsername" placeholder="fuzzyfox" class="input-xlarge" required="" type="text" value="{{ query.recipientUsername }}">
-              <p class="help-block">i.e. their webmaker username</p>
-            </div>
-          </div>
-
           <!-- Select Basic -->
           <div class="control-group">
-            <label class="control-label" for="issuer">File Format</label>
+            <label class="control-label" for="issuer">Issuer</label>
             <div class="controls">
               <select id="issuer" name="issuer" class="input-xlarge">
                 <option value="amira">A Dhalla</option>
